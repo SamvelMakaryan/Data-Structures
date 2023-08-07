@@ -1,3 +1,12 @@
 [submodule "BitVector"]
 	path = BitVector
 	url = ../BitVector/
+[submodule "SortedList"]
+	path = SortedList
+	url = ../SortedList/
+[submodule "Trees"]
+	path = Trees
+	url = ../Trees/
+[submodule "STL"]
+	path = STL
+	url = ../STL/
