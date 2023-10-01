@@ -286,6 +286,7 @@ namespace DS {
 				return true;
 			}
 		}
+		inStack[v] = false;
 		return false;
 	}
 

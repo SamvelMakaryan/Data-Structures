@@ -281,6 +281,7 @@ namespace DS {
                 }
             }
         }
+        inStack[v] = false;
         return false;
     }
 
