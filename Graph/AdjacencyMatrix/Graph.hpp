@@ -32,13 +32,18 @@ namespace DS {
 		int getEdgeCount() const noexcept;
 		int getVertexCount() const noexcept;
 		int getCountOfComponents() const;
+		bool hasCycle() const;
 		[[nodiscard]] bool empty() const noexcept;
 		void clear();
 		void transpose();
 		std::vector<int> shortestPath(int, int) const;
-		std::vector<std::vector<int>> allShortestPaths(int, int) const;
+		std::vector<std::vector<int>> allPossiblePaths(int, int) const;
+		int countOfVertexesInLevel(int, int) const;
 	private:
+		bool hasCycleHelper(int, int, std::vector<bool>&) const;
+		bool hasCycleHelper(int, std::vector<bool>&, std::vector<bool>&) const;
 		void extraDFSHelper(int, std::vector<bool>&, bool) const;
+		void allPossiblePathsHelper(int, int, std::vector<int>&, std::vector<std::vector<int>>&) const;
 		int is_visted(std::vector<bool>&) const;
 	private:
 		std::vector<std::vector<bool>> m_vec;

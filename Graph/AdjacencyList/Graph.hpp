@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <stdexcept>
 #include <iostream>
-#include <cstddef>
 #include <utility>
 #include <vector>
 #include <stack>
@@ -16,7 +15,7 @@ namespace DS {
 	class Graph {
 	public:
 		Graph() = default;
-		Graph(std::size_t);
+		Graph(int);
 		Graph(const Graph&) = default;
 		Graph(Graph&&) noexcept = default; 
 		~Graph() = default;
@@ -25,26 +24,31 @@ namespace DS {
 		Graph& operator=(Graph&&) noexcept;
 	public:
 		void addVertex();
-		void addEdge(std::size_t, std::size_t);
-		void BFS(std::size_t) const;
-		void DFS(std::size_t) const;
-		void extraDFS(std::size_t) const;
-		void removeVertex(std::size_t);
-		void removeEdge(std::size_t, std::size_t);
-		std::size_t getEdgeCount() const noexcept;
-		std::size_t getVertexCount() const noexcept;
-		std::size_t getCountOfComponents() const;
+		void addEdge(int, int);
+		void BFS(int) const;
+		void DFS(int) const;
+		void extraDFS(int) const;
+		void removeVertex(int);
+		void removeEdge(int, int);
+		int getEdgeCount() const noexcept;
+		int getVertexCount() const noexcept;
+		int getCountOfComponents() const;
 		[[nodiscard]] bool empty() const noexcept;
+		bool hasCycle() const;
 		void clear();
 		void transpose();
-		std::vector<std::size_t> shortestPath(std::size_t, std::size_t) const;
-		std::vector<std::vector<std::size_t>> allPaths(std::size_t, std::size_t) const;
+		std::vector<int> shortestPath(int, int) const;
+		std::vector<std::vector<int>> allPossiblePaths(int, int) const;
+		int countOfVertexesInLevel(int, int) const;
 	private:
-		void extraDFSHelper(std::size_t, std::vector<bool>&, bool) const;
-		long is_visted(std::vector<bool>&) const;
+		void extraDFSHelper(int, std::vector<bool>&, bool) const;
+		bool hasCycleHelper(int, int, std::vector<bool>&) const;
+		bool hasCycleHelper(int, std::vector<bool>&, std::vector<bool>&) const;
+		int is_visted(std::vector<bool>&) const;
+		void allPossiblePathsHelper(int, int, std::vector<int>&, std::vector<std::vector<int>>&) const;
 	private:
-		std::vector<std::forward_list<std::size_t>> m_vec;
-		std::size_t m_edge_count;
+		std::vector<std::forward_list<int>> m_vec;
+		int m_edge_count;
 	};
 
 } //namespace DS

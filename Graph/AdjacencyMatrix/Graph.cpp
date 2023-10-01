@@ -227,4 +227,115 @@ namespace DS {
 		std::reverse(vec.begin(), vec.end());
 		return vec;
 	}
+
+    //for undirected graphs
+    // bool Graph::hasCycle() const {
+    //     std::vector<bool> visited(m_vec.size(), false);
+    //     for (int i = 0; i < m_vec.size(); ++i) {
+    //         if (!visited[i] && hasCycleHelper(i, -1, visited)) {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
+
+
+    bool Graph::hasCycleHelper(int v, int parent, std::vector<bool>& visited) const {
+        visited[v] = true;
+        for (int i = 0; i < m_vec.size(); ++i) {
+            if (m_vec[v][i]) {
+                if (!visited[i]) {
+                    if (hasCycleHelper(i, v, visited)) {
+                        return true;
+                    } 
+                } else if (i != parent) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    bool Graph::hasCycle() const {
+        std::vector<bool> visited(m_vec.size(), false);
+        std::vector<bool> inStack(m_vec.size(), false);
+        for (int i = 0; i < m_vec.size(); ++i) {
+            if (!visited[i] && hasCycleHelper(i, inStack, visited)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool Graph::hasCycleHelper(int v, std::vector<bool>& inStack, std::vector<bool>& visited) const {
+        visited[v] = true;
+        inStack[v] = true;
+        for (int i = 0; i < m_vec.size(); ++i) {
+            if (m_vec[v][i]) {
+                if (!visited[i]) {
+                    if (hasCycleHelper(i, inStack, visited)) {
+                        return true;
+                    } 
+                } else if (inStack[i]) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    std::vector<std::vector<int>> Graph::allPossiblePaths(int src, int dest) const {
+        if (src >= m_vec.size() || dest >= m_vec.size()) {
+			throw std::invalid_argument("The 'vertex' doesn't exist.");
+		}
+		std::vector<std::vector<int>> allPaths;
+		std::vector<int> cur;
+		allPossiblePathsHelper(src, dest, cur, allPaths);
+		return allPaths;
+    }
+
+    void Graph::allPossiblePathsHelper(int src, int dest, std::vector<int>& cur, std::vector<std::vector<int>>& all) const {
+        cur.push_back(src);
+        if (src == dest) {
+            all.push_back(cur);
+        } else {
+            for (int i = 0; i < m_vec.size(); ++i) {
+                if (m_vec[src][i]) {
+                    allPossiblePathsHelper(i, dest, cur, all);
+                }
+            }
+        }
+        cur.pop_back();
+    }
+
+    int Graph::countOfVertexesInLevel(int v, int level) const {
+        if (v >= m_vec.size()) {
+            throw std::invalid_argument("Invalid vertex.");
+        }
+        std::queue<int> q;
+        std::vector<bool> visited(m_vec.size(), false);
+        q.push(v);
+        visited[v] = true;
+        int curLevel = 0;
+        while (!q.empty()) {
+            int size = q.size();
+            for (int i = 0; i < size; ++i) {
+                int tmp = q.front();
+                q.pop();
+                for (int i = 0; i < m_vec.size(); ++i) {
+                    if (m_vec[tmp][i] && !visited[i]) {
+                        q.push(i);
+                        visited[i] = true;
+                    }
+                }
+            }
+            if (curLevel == level) {
+                return size;
+            }
+            ++curLevel;
+        }
+        throw std::invalid_argument("Level doesn't exist.");
+        
+    }
+
 }
