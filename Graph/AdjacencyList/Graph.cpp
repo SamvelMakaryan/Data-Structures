@@ -341,6 +341,28 @@ namespace DS {
 		throw std::invalid_argument("Level doesn't exist.");
 	}
 
+	std::vector<int> Graph::topologicalSort() const {
+		if (m_vec.empty()) {
+			return {};
+		}
+		std::vector<bool> visited(m_vec.size(), false);
+		std::list<int> l;
+		for (int i = 0; i < m_vec.size(); ++i) {
+			if (!visited[i]) {
+				topologicalSortHelper(i, visited, l);
+			}
+		}
+		return std::vector<int>(l.begin(), l.end());
+	}
 
+	void Graph::topologicalSortHelper(int v, std::vector<bool>& visited, std::list<int>& l) const {
+		visited[v] = true;
+		for (auto& i : m_vec[v]) {
+			if (!visited[i]) {
+				topologicalSortHelper(i, visited, l);
+			}
+		}
+		l.push_front(v);
+	}
 
 } // namespace DS

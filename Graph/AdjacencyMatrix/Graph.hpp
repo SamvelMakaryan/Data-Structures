@@ -8,6 +8,7 @@
 #include <vector>
 #include <stack>
 #include <queue>
+#include <list>
 
 namespace DS {
 	
@@ -39,12 +40,14 @@ namespace DS {
 		std::vector<int> shortestPath(int, int) const;
 		std::vector<std::vector<int>> allPossiblePaths(int, int) const;
 		int countOfVertexesInLevel(int, int) const;
+		std::vector<int> topologicalSort() const;
 	private:
 		bool hasCycleHelper(int, int, std::vector<bool>&) const;
 		bool hasCycleHelper(int, std::vector<bool>&, std::vector<bool>&) const;
 		void extraDFSHelper(int, std::vector<bool>&, bool) const;
 		void allPossiblePathsHelper(int, int, std::vector<int>&, std::vector<std::vector<int>>&) const;
 		int is_visted(std::vector<bool>&) const;
+		void topologicalSortHelper(int, std::vector<bool>&, std::list<int>&) const;
 	private:
 		std::vector<std::vector<bool>> m_vec;
 		int m_edge_count;
