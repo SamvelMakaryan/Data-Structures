@@ -6,8 +6,10 @@
 #include <iostream>
 #include <utility>
 #include <vector>
+#include <limits>
 #include <stack>
 #include <queue>
+#include <cmath>
 #include <list>
 
 namespace DS {
@@ -24,7 +26,7 @@ namespace DS {
 		Graph& operator=(Graph&&) noexcept;
 	public:
 		void addVertex();
-		void addEdge(int, int);
+		void addEdge(int, int, double);
 		void BFS(int) const;
 		void DFS(int) const;
 		void extraDFS(int) const;
@@ -52,7 +54,7 @@ namespace DS {
 		int is_visted(std::vector<bool>&) const;
 		void topologicalSortHelper(int, std::vector<bool>&, std::list<int>&) const;
 	private:
-		std::vector<std::vector<bool>> m_vec;
+		std::vector<std::vector<double>> m_vec;
 		int m_edge_count;
 	};
 

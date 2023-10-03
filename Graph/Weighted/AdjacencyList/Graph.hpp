@@ -1,6 +1,7 @@
 #ifndef GRAPH_HPP_
 #define GRAPH_HPP_
 
+#include <forward_list>
 #include <algorithm>
 #include <stdexcept>
 #include <iostream>
@@ -24,7 +25,7 @@ namespace DS {
 		Graph& operator=(Graph&&) noexcept;
 	public:
 		void addVertex();
-		void addEdge(int, int);
+		void addEdge(int, int, double);
 		void BFS(int) const;
 		void DFS(int) const;
 		void extraDFS(int) const;
@@ -33,8 +34,8 @@ namespace DS {
 		int getEdgeCount() const noexcept;
 		int getVertexCount() const noexcept;
 		int getCountOfComponents() const;
-		bool hasCycle() const;
 		[[nodiscard]] bool empty() const noexcept;
+		bool hasCycle() const;
 		void clear();
 		void transpose();
 		std::vector<int> shortestPath(int, int) const;
@@ -43,16 +44,16 @@ namespace DS {
 		std::vector<int> topologicalSort() const;
 		std::vector<std::vector<int>> getStronglyConnectedComponents() const;
 	private:
-		void stronglyConnectedComponentsHelper(int, std::vector<int>&, std::vector<int>&, std::vector<bool>&, 	
-												std::stack<int>&, std::vector<std::vector<int>>&, int&) const;
+		void stronglyConnectedComponentsHelper(int, std::vector<int>&, std::vector<int>&, std::vector<bool>&, 
+										 		std::stack<int>&, std::vector<std::vector<int>>&, int&) const;
+		void extraDFSHelper(int, std::vector<bool>&, bool) const;
 		bool hasCycleHelper(int, int, std::vector<bool>&) const;
 		bool hasCycleHelper(int, std::vector<bool>&, std::vector<bool>&) const;
-		void extraDFSHelper(int, std::vector<bool>&, bool) const;
-		void allPossiblePathsHelper(int, int, std::vector<int>&, std::vector<std::vector<int>>&) const;
 		int is_visted(std::vector<bool>&) const;
+		void allPossiblePathsHelper(int, int, std::vector<int>&, std::vector<std::vector<int>>&) const;
 		void topologicalSortHelper(int, std::vector<bool>&, std::list<int>&) const;
 	private:
-		std::vector<std::vector<bool>> m_vec;
+		std::vector<std::forward_list<std::pair<int, double>>> m_vec;
 		int m_edge_count;
 	};
 

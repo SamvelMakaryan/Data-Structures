@@ -3,12 +3,12 @@
 
 int main() {
     DS::Graph g(6);
-    g.addEdge(5, 2);
-    g.addEdge(5, 0);
-    g.addEdge(4, 0);
-    g.addEdge(4, 1);
-    g.addEdge(2, 3);
-    g.addEdge(3, 1);
+    g.addEdge(5, 2, 2);
+    g.addEdge(5, 0, 2);
+    g.addEdge(4, 0, 2);
+    g.addEdge(4, 1, 2);
+    g.addEdge(2, 3, 2);
+    g.addEdge(3, 1, 2);
     std::cout << "Graph DFS traversal starting from 0" << std::endl;
     g.DFS(0);
     std::cout << "Count of vertexes  -  " << g.getVertexCount() << std::endl; 
@@ -24,12 +24,12 @@ int main() {
         std::cout << i << " ";
     }
     std::cout << std::endl;
-    std::cout << "Shortest path from 2 to 3" << std::endl;
-    auto vec =  g.shortestPath(2, 3);
-    for (auto& v : vec) {
-        std::cout << v << " ";
-    }
-    std::cout << std::endl;
+    // std::cout << "Shortest path from 2 to 3" << std::endl;
+    // auto vec =  g.shortestPath(2, 3);
+    // for (auto& v : vec) {
+    //     std::cout << v << " ";
+    // }
+    // std::cout << std::endl;
     std::cout << "All possible paths from 4 to 5" << std::endl;
     auto paths = g.allPossiblePaths(2, 3);
     for (auto i : paths) {
@@ -40,7 +40,7 @@ int main() {
     }
     std::cout << "Does graph has cycle  -  " << std::boolalpha << g.hasCycle() << std::endl;
     std::cout << "Count of nodes in level 1 from 4  -  " << g.countOfVertexesInLevel(4, 1) << std::endl;
-    g.addEdge(3, 5);
+    g.addEdge(3, 5, 5);
     std::cout << "Strongly connected components"<< std::endl;
     auto components = g.getStronglyConnectedComponents();
     for (auto i : components) {

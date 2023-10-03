@@ -42,7 +42,10 @@ namespace DS {
 		std::vector<std::vector<int>> allPossiblePaths(int, int) const;
 		int countOfVertexesInLevel(int, int) const;
 		std::vector<int> topologicalSort() const;
+		std::vector<std::vector<int>> getStronglyConnectedComponents() const;
 	private:
+		void stronglyConnectedComponentsHelper(int, std::vector<int>&, std::vector<int>&, std::vector<bool>&, 
+										 		std::stack<int>&, std::vector<std::vector<int>>&, int&) const;
 		void extraDFSHelper(int, std::vector<bool>&, bool) const;
 		bool hasCycleHelper(int, int, std::vector<bool>&) const;
 		bool hasCycleHelper(int, std::vector<bool>&, std::vector<bool>&) const;

@@ -35,17 +35,17 @@ namespace DS {
 	}	
 	
 	void Graph::addVertex() {
-		m_vec.push_back(std::forward_list<int>{});
+		m_vec.push_back(std::forward_list<std::pair<int, double>>{});
 	}
 	
-	void Graph::addEdge(int src, int dest) {
+	void Graph::addEdge(int src, int dest, double weight) {
 		if (src >= m_vec.size() || dest >= m_vec.size()) {
 			throw std::invalid_argument("The 'edge' should connect consisting elements.");
 		}	
 		++m_edge_count;
-		m_vec[src].emplace_front(dest);
+		m_vec[src].emplace_front(dest, weight);
 		//for undirected
-		//m_vec[dest].emplace_front(src);
+		//m_vec[dest].emplace_front(src, weight);
 		//++m_edge_count;
 	}
 	
@@ -54,7 +54,7 @@ namespace DS {
 			throw std::invalid_argument("The 'edge' doesn't exist.");
 		}	
 		m_vec[src].remove_if([this, dest](const auto& val) {
-			if (val == dest) {
+			if (val.first == dest) {
 				--m_edge_count;
 				return true;
 			} else {
@@ -63,7 +63,7 @@ namespace DS {
 		});
 		//for undirected
 	//	m_vec[dest].remove_if([this, src](const auto& val) {
-	//		if (val == src) {
+	//		if (val.first == src) {
 	//			--m_edge_count;
 	//			return true;
 	//		} else {
@@ -77,8 +77,8 @@ namespace DS {
 			throw std::invalid_argument("Invalid vertex.");		
 		}
 		for (auto i : m_vec[v]) {
-			m_vec[i].remove_if([this, v](const auto& val) {
-				if (val == v) {
+			m_vec[i.first].remove_if([this, v](const auto& val) {
+				if (val.first == v) {
 					--m_edge_count;
 					return true;
 				} else {
@@ -108,9 +108,9 @@ namespace DS {
 				q.pop(); 
 				std::cout << tmp << " ";
 				for (const auto& i : m_vec[tmp]) {
-					if (!visited[i]) {
-						visited[i] = true;
-						q.push(i);
+					if (!visited[i.first]) {
+						visited[i.first] = true;
+						q.push(i.first);
 					}
 				}
 			}
@@ -137,8 +137,8 @@ namespace DS {
 			std::cout << v << " ";
 		}
 		for (auto i : m_vec[v]) {
-			if (!visited[i]) {
-				extraDFSHelper(i, visited, print);
+			if (!visited[i.first]) {
+				extraDFSHelper(i.first, visited, print);
 			}
 		}
 	}
@@ -180,9 +180,9 @@ namespace DS {
 			s.pop();
 			std::cout << tmp << " ";
 			for (const auto& i : m_vec[tmp]) {
-				if (!visited[i]) {
-					visited[i] = true;
-					s.push(i);
+				if (!visited[i.first]) {
+					visited[i.first] = true;
+					s.push(i.first);
 				}
 			}
 		}
@@ -193,50 +193,52 @@ namespace DS {
 		Graph tmp(m_vec.size());
 		for (int i = 0; i < m_vec.size(); ++i) {
 			for (auto v : m_vec[i]) {
-				tmp.m_vec[v].push_front(i);
+				tmp.m_vec[v.first].emplace_front(i, v.second);	
 			}
 		}
 		*this = tmp;
 	}
 
-	std::vector<int> Graph::shortestPath(int src, int dest) const {
-		if (dest > m_vec.size() || src > m_vec.size()) {
-			throw std::invalid_argument("The 'vertex' doesn't exist.");
-		}
-		if (src == dest) {
-			return {src};
-		}
-		std::vector<int> vec;
-		std::queue<int> q;
-		std::vector<bool> visited(m_vec.size(), false);
-		std::vector<int> parents(m_vec.size(), -1);
-		q.push(src);
-		visited[src] = true;
-		while (!q.empty()) {
-			int tmp = q.front();
-			q.pop();
-			if (tmp == dest) {
-				break;
-			}
-			for (auto i : m_vec[tmp]) {
-				if (!visited[i]) {
-					visited[i] = true;
-					parents[i] = tmp;
-					q.push(i);
-				}
-			}
-		}
-		int tmp = dest;
-		if (parents[dest] == -1) {
-			return {};
-		}
-		while (tmp != -1) {
-			vec.push_back(tmp);
-			tmp = parents[tmp];
-		}
-		std::reverse(vec.begin(), vec.end());
-		return vec;
-	}
+	//TODO
+
+	// std::vector<int> Graph::shortestPath(int src, int dest) const {
+	// 	if (dest > m_vec.size() || src > m_vec.size()) {
+	// 		throw std::invalid_argument("The 'vertex' doesn't exist.");
+	// 	}
+	// 	if (src == dest) {
+	// 		return {src};
+	// 	}
+	// 	std::vector<int> vec;
+	// 	std::queue<int> q;
+	// 	std::vector<bool> visited(m_vec.size(), false);
+	// 	std::vector<int> parents(m_vec.size(), -1);
+	// 	q.push(src);
+	// 	visited[src] = true;
+	// 	while (!q.empty()) {
+	// 		int tmp = q.front();
+	// 		q.pop();
+	// 		if (tmp == dest) {
+	// 			break;
+	// 		}
+	// 		for (auto i : m_vec[tmp]) {
+	// 			if (!visited[i]) {
+	// 				visited[i] = true;
+	// 				parents[i] = tmp;
+	// 				q.push(i);
+	// 			}
+	// 		}
+	// 	}
+	// 	int tmp = dest;
+	// 	if (parents[dest] == -1) {
+	// 		return {};
+	// 	}
+	// 	while (tmp != -1) {
+	// 		vec.push_back(tmp);
+	// 		tmp = parents[tmp];
+	// 	}
+	// 	std::reverse(vec.begin(), vec.end());
+	// 	return vec;
+	// }
 
 	//for undirected graphs
 	// bool Graph::hasCycle() const {
@@ -249,19 +251,19 @@ namespace DS {
 	// 	return false;
 	// }
 
-	bool Graph::hasCycleHelper(int v, int parent, std::vector<bool>& visited) const {
-		visited[v] = true;
-		for (auto vec : m_vec[v]) {
-			if (!visited[vec]) {
-				if (hasCycleHelper(vec, v, visited)) {
-					return true;
-				}
-			} else if (vec != parent) {
-				return true;
-			}
-		}
-		return false;
-	}
+	// bool Graph::hasCycleHelper(int v, int parent, std::vector<bool>& visited) const {
+	// 	visited[v] = true;
+	// 	for (auto vec : m_vec[v]) {
+	// 		if (!visited[vec.first]) {
+	// 			if (hasCycleHelper(vec.first, v, visited)) {
+	// 				return true;
+	// 			}
+	// 		} else if (vec.first != parent) {
+	// 			return true;
+	// 		}
+	// 	}
+	// 	return false;
+	// }
 
 	bool Graph::hasCycle() const {
 		std::vector<bool> visited(m_vec.size(), false);
@@ -278,11 +280,11 @@ namespace DS {
 		visited[v] = true;
 		inStack[v] = true;
 		for (auto vec : m_vec[v]) {
-			if (!visited[vec]) {
-				if (hasCycleHelper(vec, inStack, visited)) {
+			if (!visited[vec.first]) {
+				if (hasCycleHelper(vec.first, inStack, visited)) {
 					return true;
 				}
-			} else if (inStack[vec]) {
+			} else if (inStack[vec.first]) {
 				return true;
 			}
 		}
@@ -306,7 +308,7 @@ namespace DS {
 			all.push_back(cur);
 		} else {
 			for (auto& i : m_vec[src]) {
-				allPossiblePathsHelper(i, dest, cur, all);
+				allPossiblePathsHelper(i.first, dest, cur, all);
 			}
 		}
 		cur.pop_back();
@@ -327,9 +329,9 @@ namespace DS {
 				int tmp = q.front();
 				q.pop();
 				for (auto& i : m_vec[tmp]) {
-					if (!visited[i]) {
-						q.push(i);
-						visited[i] = true;
+					if (!visited[i.first]) {
+						q.push(i.first);
+						visited[i.first] = true;
 					}
 				}
 			}
@@ -358,8 +360,8 @@ namespace DS {
 	void Graph::topologicalSortHelper(int v, std::vector<bool>& visited, std::list<int>& l) const {
 		visited[v] = true;
 		for (auto& i : m_vec[v]) {
-			if (!visited[i]) {
-				topologicalSortHelper(i, visited, l);
+			if (!visited[i.first]) {
+				topologicalSortHelper(i.first, visited, l);
 			}
 		}
 		l.push_front(v);
@@ -388,11 +390,11 @@ namespace DS {
 		inStack[v] = true;
 		s.push(v);
 		for (auto i : m_vec[v]) {
-			if (ids[i] == -1) {
-				stronglyConnectedComponentsHelper(i, ids, low, inStack, s, result, id);
+			if (ids[i.first] == -1) {
+				stronglyConnectedComponentsHelper(i.first, ids, low, inStack, s, result, id);
 			}
-			if (inStack[i]) {
-				low[v] = std::min(low[v], low[i]); 
+			if (inStack[i.first]) {
+				low[v] = std::min(low[v], low[i.first]); 
 			}
 		}
 		if (low[v] == ids[v]) {

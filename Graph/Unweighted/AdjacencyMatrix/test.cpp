@@ -40,4 +40,13 @@ int main() {
     }
     std::cout << "Does graph has cycle  -  " << std::boolalpha << g.hasCycle() << std::endl;
     std::cout << "Count of nodes in level 1 from 4  -  " << g.countOfVertexesInLevel(4, 1) << std::endl;
+    g.addEdge(3, 5);
+    std::cout << "Strongly connected components"<< std::endl;
+    auto components = g.getStronglyConnectedComponents();
+    for (auto i : components) {
+        for (auto j : i) {
+            std::cout << j << "  ";
+        }
+        std::cout << std::endl;
+    }
 }
