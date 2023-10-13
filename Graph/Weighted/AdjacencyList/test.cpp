@@ -4,11 +4,11 @@
 int main() {
     DS::Graph g(6);
     g.addEdge(5, 2, 2);
-    g.addEdge(5, 0, 2);
-    g.addEdge(4, 0, 2);
-    g.addEdge(4, 1, 2);
-    g.addEdge(2, 3, 2);
-    g.addEdge(3, 1, 2);
+    g.addEdge(5, 0, 3);
+    g.addEdge(4, 0, 4);
+    g.addEdge(4, 1, 11);
+    g.addEdge(2, 3, 22);
+    g.addEdge(3, 1, 3);
     std::cout << "Graph DFS traversal starting from 0" << std::endl;
     g.DFS(0);
     std::cout << "Count of vertexes  -  " << g.getVertexCount() << std::endl; 
@@ -49,4 +49,14 @@ int main() {
         }
         std::cout << std::endl;
     }
+    std::cout << "All shortest distances from vertex 3" << std::endl;
+    auto distances = g.singleSourceSHortestPath(3);
+    for (auto i : distances) {
+        if (i == std::numeric_limits<double>::infinity()) {
+            std::cout << "INF "; 
+        } else {
+            std::cout << i << " ";
+        }
+    }
+    std::cout << std::endl;
 }

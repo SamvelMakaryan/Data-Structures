@@ -7,6 +7,7 @@
 #include <iostream>
 #include <utility>
 #include <vector>
+#include <limits>
 #include <stack>
 #include <queue>
 #include <list>
@@ -38,11 +39,11 @@ namespace DS {
 		bool hasCycle() const;
 		void clear();
 		void transpose();
-		std::vector<int> shortestPath(int, int) const;
 		std::vector<std::vector<int>> allPossiblePaths(int, int) const;
 		int countOfVertexesInLevel(int, int) const;
 		std::vector<int> topologicalSort() const;
 		std::vector<std::vector<int>> getStronglyConnectedComponents() const;
+		std::vector<double> singleSourceSHortestPath(int) const;
 	private:
 		void stronglyConnectedComponentsHelper(int, std::vector<int>&, std::vector<int>&, std::vector<bool>&, 
 										 		std::stack<int>&, std::vector<std::vector<int>>&, int&) const;

@@ -189,47 +189,6 @@ namespace DS {
 		return components;
 	}
 
-    //TODO
-
-    // std::vector<int> Graph::shortestPath(int src, int dest) const {
-	// 	if (dest > m_vec.size() || src > m_vec.size()) {
-	// 		throw std::invalid_argument("The 'vertex' doesn't exist.");
-	// 	}
-	// 	if (src == dest) {
-	// 		return {src};
-	// 	}
-	// 	std::vector<int> vec;
-	// 	std::queue<int> q;
-	// 	std::vector<bool> visited(m_vec.size(), false);
-	// 	std::vector<int> parents(m_vec.size(), -1);
-	// 	q.push(src);
-	// 	visited[src] = true;
-	// 	while (!q.empty()) {
-	// 		int tmp = q.front();
-	// 		q.pop();
-	// 		if (tmp == dest) {
-	// 			break;
-	// 		}
-	// 		for (int i = 0; i < m_vec.size(); ++i) {
-	// 			if (m_vec[tmp][i] && !visited[i]) {
-	// 				visited[i] = true;
-	// 				parents[i] = tmp;
-	// 				q.push(i);
-	// 			}
-	// 		}
-	// 	}
-	// 	int tmp = dest;
-	// 	if (parents[dest] == -1) {
-	// 		return {};
-	// 	}
-	// 	while (tmp != -1) {
-	// 		vec.push_back(tmp);
-	// 		tmp = parents[tmp];
-	// 	}
-	// 	std::reverse(vec.begin(), vec.end());
-	// 	return vec;
-	// }
-
     //for undirected graphs
     // bool Graph::hasCycle() const {
     //     std::vector<bool> visited(m_vec.size(), false);
@@ -240,7 +199,6 @@ namespace DS {
     //     }
     //     return false;
     // }
-
 
     bool Graph::hasCycleHelper(int v, int parent, std::vector<bool>& visited) const {
         visited[v] = true;
@@ -407,6 +365,28 @@ namespace DS {
 			} while (tmp != v);
 			result.push_back(cur);
 		}
+	}
+
+    std::vector<double> Graph::singleSourceSHortestPath(int src) const {
+		std::vector<double> distance(m_vec.size(), std::numeric_limits<double>::infinity());
+		distance[src] = 0;
+		auto comparator = [](const auto& p1, const auto& p2){return p1.first < p2.first;};
+		std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(comparator)> pq(comparator);
+		pq.push({src, 0}); 
+		while (!pq.empty()) {
+			auto [v, w] = pq.top();
+			pq.pop();
+			if (w > distance[v]) {
+				continue;
+			}
+			for (int i = 0; i < m_vec.size(); ++i) {
+				if (!std::isinf(m_vec[v][i]) && distance[v] + m_vec[v][i] < distance[i]) {
+					distance[i] = distance[v] + m_vec[v][i];
+					pq.push({i, distance[i]});
+				}
+			}
+		}
+		return distance;
 	}
 
 } //namespace DS
