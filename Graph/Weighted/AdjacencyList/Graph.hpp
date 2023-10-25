@@ -35,6 +35,7 @@ namespace DS {
 		int getEdgeCount() const noexcept;
 		int getVertexCount() const noexcept;
 		int getCountOfComponents() const;
+		int getWeightOfMST() const;
 		[[nodiscard]] bool empty() const noexcept;
 		bool hasCycle() const;
 		void clear();

@@ -391,4 +391,27 @@ namespace DS {
 		return distance;
 	}
 
+	int Graph::getWeightOfMST() const {
+		std::vector<bool> visited(m_vec.size(), false);
+		int weight = 0;
+		auto comp = [](const auto& p1, const auto& p2) {return p1.second > p2.second;};
+		std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(comp)> pq(comp);
+		pq.push({0, 0});
+		while (!pq.empty()) {
+			auto [u, w] = pq.top();
+			pq.pop();
+			if (visited[u]) {
+				continue;
+			}
+			visited[u] = true;
+			weight += w;
+			for (auto v : m_vec[u]) {
+				if (!visited[v.first]) {
+					pq.push(v);
+				}
+			}
+		}
+		return weight;
+	}
+
 } // namespace DS

@@ -24,12 +24,6 @@ int main() {
         std::cout << i << " ";
     }
     std::cout << std::endl;
-    // std::cout << "Shortest path from 2 to 3" << std::endl;
-    // auto vec =  g.shortestPath(2, 3);
-    // for (auto& v : vec) {
-    //     std::cout << v << " ";
-    // }
-    // std::cout << std::endl;
     std::cout << "All possible paths from 4 to 5" << std::endl;
     auto paths = g.allPossiblePaths(2, 3);
     for (auto i : paths) {
@@ -58,4 +52,20 @@ int main() {
             std::cout << i << " ";
         }
     }
+    std::cout << std::endl;
+    DS::Graph g2(5);
+    g2.addEdge(0, 1, 10);
+    g2.addEdge(1, 0, 10);
+    g2.addEdge(0, 2, 5);
+    g2.addEdge(2, 0, 5);
+    g2.addEdge(1, 3, 2);
+    g2.addEdge(3, 1, 2);
+    g2.addEdge(3, 0, 0);
+    g2.addEdge(0, 3, 0);
+    g2.addEdge(3, 2, 1);
+    g2.addEdge(2, 3, 1);
+    g2.addEdge(1, 4, 11);
+    g2.addEdge(4, 1, 11);
+    std::cout << "The weight of Minimum spannig tree of graph is  -  " << g2.getWeightOfMST() << std::endl;
+    std::cout << std::endl;
 }
