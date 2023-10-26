@@ -13,4 +13,6 @@ int main() {
     ds.unify(1, 6);
     std::cout << "Are 0 and 7 in the same set? " << (ds.inSameComponent(0, 7) ? "Yes" : "No") << std::endl;
     std::cout << "Are 3 and 8 in the same set? " << (ds.inSameComponent(3, 8) ? "Yes" : "No") << std::endl;
+    std::cout << "Count of elemnts in set is  -  " << ds.getSize() << std::endl;
+    std::cout << "Count of components in set is  -  " << ds.getComponentsCount() << std::endl;
 }
